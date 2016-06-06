@@ -18,6 +18,7 @@ if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
   #Section gerrit
   [ -z "${REPO_PATH}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gerrit.basePath "${REPO_PATH}"
   [ -z "${WEBURL}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gerrit.canonicalWebUrl "${WEBURL}"
+  [ -z "${SCREEN_UI}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gerrit.changeScreen "${SCREEN_UI}"
 
   #Section database
   if [ "${DATABASE_TYPE}" = 'postgresql' ]; then
@@ -97,6 +98,9 @@ if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
 
   echo "Upgrading gerrit..."
   java -jar "${GERRIT_WAR}" init --batch -d "${GERRIT_SITE}"
+  if [ "${REINDEX}" = "TRUE" ]; then
+    java -jar "${GERRIT_WAR}" reindex --recheck-mergeable -d "${GERRIT_SITE}"
+  fi
   if [ $? -eq 0 ]; then
     echo "Upgrading is OK."
   else
@@ -105,7 +109,10 @@ if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
   fi
 fi
 
-echo "Starting gerrit init script"
-nohup /var/gerrit/adop\_scripts/gerrit_init.sh &
-
-exec "$@"
+if [ "${SKIP_INIT}" != "TRUE" ] || [ -z "${SKIP_INIT}" ]; then
+  echo "Starting gerrit init script"
+  nohup /var/gerrit/adop\_scripts/gerrit_init.sh &
+  exec "$@"
+else
+  exec "$@"
+fi

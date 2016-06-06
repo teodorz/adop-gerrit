@@ -38,6 +38,19 @@ The following command will run adop-gerrit and connect it to MySQL and OpenLDAP
 
 In addition all the LDAP attibutes defined in [Gerrit LDAP](https://gerrit-review.googlesource.com/Documentation/config-gerrit.html#ldap) are supported.
 
+## Additional useful variables
+
+The following variables were added for further customisation:
+
+REINDEX if set to TRUE will perform reindexing required for Gerrit upgrades (Gerrit 2.9 contains schema changes)
+SKIP_INIT if set to TRUE will skip the initialisation scripts that are run for adop-gerrit
+SCREEN_UI if set to OLD_UI will revert the display UI to old version (gerrit.changeScreen = OLD_UI)  
+```
+  -e REINDEX=TRUE \
+  -e SKIP_INIT=TRUE \
+  -e SCREEN_UI=OLD_UI \
+``` 
+
 # License
 Please view [licence information](LICENCE.md) for the software contained on this image.
 
