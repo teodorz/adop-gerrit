@@ -96,6 +96,36 @@ if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
   #Section download
   [ -z "${DOWNLOAD_SCHEME}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" download.scheme "${DOWNLOAD_SCHEME}"
 
+  #Section Garbage-Collection (gc)
+  [ -z "${GC_START_TIME}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gc.startTime "${GC_START_TIME}"
+  [ -z "${GC_INTERVAL}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gc.interval "${GC_INTERVAL}"
+  [ -z "${GC_AGGRESSIVE}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gc.aggressive "${GC_AGGRESSIVE}"
+
+  #Section gitweb
+  [ -z "${GITWEB_TYPE}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gitweb.type "${GITWEB_TYPE}"
+  [ -z "${GITWEB_URL}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gitweb.url "${GITWEB_URL}"
+  [ -z "${GITWEB_PROJECT}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gitweb.project "${GITWEB_PROJECT}"
+  [ -z "${GITWEB_REVISION}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gitweb.revision "${GITWEB_REVISION}"
+  [ -z "${GITWEB_BRANCH}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gitweb.branch "${GITWEB_BRANCH}"
+  [ -z "${GITWEB_FILE_HISTORY}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gitweb.filehistory "${GITWEB_FILE_HISTORY}"
+  [ -z "${GITWEB_LINKNAME}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gitweb.linkname "${GITWEB_LINKNAME}"
+  [ -z "${GITWEB_REPOSITORIES_FOLDER}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gitweb.repositoriesFolder "${GITWEB_REPOSITORIES_FOLDER}"
+  [ -z "${GITWEB_ROOTTREE}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gitweb.roottree "${GITWEB_ROOTTREE}"
+  [ -z "${GITWEB_FILE}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" gitweb.file "${GITWEB_FILE}"
+
+  #Section RTC
+  [ -z "${RTC_URL}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.url "${RTC_URL}"
+  [ -z "${RTC_ENABLE_INTEGRATION}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.enableRTCIntegration "${RTC_ENABLE_INTEGRATION}"
+  [ -z "${RTC_REQUIRE_WORK_ITEM_COMMENT}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.requireWorkItemComment "${RTC_REQUIRE_WORK_ITEM_COMMENT}"
+  [ -z "${RTC_ABORT_PUSH_ON_INVALID_WORK}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.abortPushOnInvalidWorkItemNum "${RTC_ABORT_PUSH_ON_INVALID_WORK}"
+  [ -z "${RTC_WORK_ITEM_SEARCH_STRING}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.workItemSearchString "${RTC_WORK_ITEM_SEARCH_STRING}"
+  [ -z "${RTC_ENABLED_FOR_PROJECTS}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.enabledForProjects "${RTC_ENABLED_FOR_PROJECTS}"
+
+  #Section commentLink "RTC"
+  [ -z "${RTC_COMMENTLINK_MATCH}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" commentLink.RTC.match "${RTC_COMMENTLINK_MATCH}"
+  [ -z "${RTC_COMMENTLINK_HTML}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" commentLink.RTC.html "${RTC_COMMENTLINK_HTML}"
+  [ -z "${RTC_COMMENTLINK_ASSOCIATION}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" commentLink.RTC.association "${RTC_COMMENTLINK_ASSOCIATION}"
+
   echo "Upgrading gerrit..."
   java -jar "${GERRIT_WAR}" init --batch -d "${GERRIT_SITE}"
   if [ "${REINDEX}" = "TRUE" ]; then
@@ -108,6 +138,9 @@ if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
     cat "${GERRIT_SITE}/logs/error_log"
   fi
 fi
+
+ # Plugins Section: Move plugins to the correct folder
+cp /var/gerrit/commit-message-rtc-work-item-validator-0.0.2.jar /var/gerrit/review_site/plugins/
 
 if [ "${SKIP_INIT}" != "TRUE" ] || [ -z "${SKIP_INIT}" ]; then
   echo "Starting gerrit init script"
