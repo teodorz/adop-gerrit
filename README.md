@@ -50,6 +50,7 @@ SCREEN_UI if set to OLD_UI will revert the display UI to old version (gerrit.cha
   -e SKIP_INIT=TRUE \
   -e SCREEN_UI=OLD_UI \
 ``` 
+Variables were also added to configure GitBlit, RTC and Garbage Collection (GC)
 
 # License
 Please view [licence information](LICENCE.md) for the software contained on this image.
