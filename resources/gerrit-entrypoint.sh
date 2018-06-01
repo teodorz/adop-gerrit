@@ -139,6 +139,9 @@ if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
   fi
 fi
 
+ # Plugins Section: Move plugins to the correct folder
+cp /var/gerrit/commit-message-rtc-work-item-validator-0.0.2.jar /var/gerrit/review_site/plugins/
+
 if [ "${SKIP_INIT}" != "TRUE" ] || [ -z "${SKIP_INIT}" ]; then
   echo "Starting gerrit init script"
   nohup /var/gerrit/adop\_scripts/gerrit_init.sh &
