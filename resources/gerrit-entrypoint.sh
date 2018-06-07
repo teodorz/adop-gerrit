@@ -120,6 +120,10 @@ if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
   [ -z "${RTC_ABORT_PUSH_ON_INVALID_WORK}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.abortPushOnInvalidWorkItemNum "${RTC_ABORT_PUSH_ON_INVALID_WORK}"
   [ -z "${RTC_WORK_ITEM_SEARCH_STRING}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.workItemSearchString "${RTC_WORK_ITEM_SEARCH_STRING}"
   [ -z "${RTC_ENABLED_FOR_PROJECTS}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.enabledForProjects "${RTC_ENABLED_FOR_PROJECTS}"
+  
+  [ -z "${RTC_USERNAME}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.username "${RTC_USERNAME}"
+  [ -z "${RTC_PASSWORD}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.password "${RTC_PASSWORD}"
+  [ -z "${RTC_AUTHORIZATION}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" rtcValidator.authorization "${RTC_AUTHORIZATION}"
 
   #Section commentLink "RTC"
   [ -z "${RTC_COMMENTLINK_MATCH}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" commentLink.RTC.match "${RTC_COMMENTLINK_MATCH}"

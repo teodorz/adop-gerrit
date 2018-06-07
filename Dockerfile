@@ -1,4 +1,4 @@
-FROM openfrontier/gerrit:2.10.x
+FROM rushan37/docker-gerrit:2.9.x
 
 MAINTAINER Nick Griffin, <nicholas.griffin>
 
